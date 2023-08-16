@@ -56,7 +56,20 @@ export function usePointerSwipe<T extends Element = Element>(
         [clearPointer]
     );
 
-    const isPortrait = React.useRef(window.matchMedia("(orientation: portrait)").matches);
+    // Detect is in force portrait mode.
+    // If is true, swip clientx and clienty
+    const portrait = React.useRef(window.matchMedia("(orientation: portrait)"));
+    const isPortrait = React.useRef(portrait.current.matches);
+    React.useEffect(() => {
+        const handleRotate = (e: MediaQueryListEvent) => {
+            isPortrait.current = e.matches;
+        };
+        portrait.current.addEventListener("change", handleRotate);
+        const p = portrait.current;
+        return () => {
+            p.removeEventListener("change", handleRotate);
+        };
+    }, []);
     const onPointerDown = useEventCallback((event: React.PointerEvent) => {
         const e = event;
         if (isPortrait.current) {
