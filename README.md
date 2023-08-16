@@ -1,12 +1,14 @@
 # Yet Another React Lightbox
 
+A custom version.
+
+Added:
+
+-   Swip pointer `clientX` and `clientY` in orientation portrait
+
 Modern React lightbox component. Performant, easy to use, customizable and extendable.
 
 ## Overview
-
-[![NPM Version](https://img.shields.io/npm/v/yet-another-react-lightbox?color=blue)](https://www.npmjs.com/package/yet-another-react-lightbox)
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/yet-another-react-lightbox?color=blue)](https://bundlephobia.com/package/yet-another-react-lightbox)
-[![License MIT](https://img.shields.io/npm/l/yet-another-react-lightbox?color=blue)](https://github.com/igordanchenko/yet-another-react-lightbox/blob/main/LICENSE)
 
 -   **Built for React:** works with React 18, 17 and 16.8.0+
 -   **UX:** supports keyboard, mouse, touchpad and touchscreen navigation
