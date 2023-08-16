@@ -19,19 +19,6 @@ body {
     padding: 0;
 }
 
-body,
-#root {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-}
-
-#root {
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
 .button {
     display: inline-flex;
     position: relative;
@@ -64,22 +51,53 @@ body,
 
     transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 
-    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 6px -1px, rgba(0, 0, 0, 0.1) 0 2px 4px -2px;
+    box-shadow:
+        rgba(0, 0, 0, 0.1) 0 4px 6px -1px,
+        rgba(0, 0, 0, 0.1) 0 2px 4px -2px;
 }
 
 @media (hover: hover) and (pointer: fine) {
     .button:hover {
         background-color: rgb(29, 78, 216);
-        box-shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.1) 0 4px 6px -4px;
+        box-shadow:
+            rgba(0, 0, 0, 0.1) 0 10px 15px -3px,
+            rgba(0, 0, 0, 0.1) 0 4px 6px -4px;
     }
 }
 
 .button:focus-visible {
     background-color: rgb(29, 78, 216);
-    box-shadow: rgba(59, 130, 246, 0.5) 0 0 0 3px, rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.1) 0 4px 6px -4px;
+    box-shadow:
+        rgba(59, 130, 246, 0.5) 0 0 0 3px,
+        rgba(0, 0, 0, 0.1) 0 10px 15px -3px,
+        rgba(0, 0, 0, 0.1) 0 4px 6px -4px;
 }
 
 .button:active {
     background-color: rgb(30, 64, 175);
-    box-shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.1) 0 4px 6px -4px;
+    box-shadow:
+        rgba(0, 0, 0, 0.1) 0 10px 15px -3px,
+        rgba(0, 0, 0, 0.1) 0 4px 6px -4px;
+}
+
+#root,
+body {
+    width: 100vw;
+    height: 100vh;
+}
+.force_landscape {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: aqua;
+}
+@media screen and (orientation: portrait) {
+    .force_landscape {
+        width: 100vmax;
+        height: 100vmin;
+        transform-origin: top left;
+        transform: rotate(90deg) translate(0, -100vmin);
+    }
 }

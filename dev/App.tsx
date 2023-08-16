@@ -22,17 +22,20 @@ export default function App() {
     const [open, setOpen] = React.useState(false);
 
     return (
-        <>
+        <div className="force_landscape">
             <Lightbox
                 open={open}
                 close={() => setOpen(false)}
                 slides={slides}
                 plugins={[Captions, Counter, Download, Share, Fullscreen, Slideshow, Thumbnails, Video, Zoom]}
+                portal={{
+                    root: document.querySelector(".force_landscape"),
+                }}
             />
 
             <button type="button" className="button" onClick={() => setOpen(true)}>
                 Open Lightbox
             </button>
-        </>
+        </div>
     );
 }

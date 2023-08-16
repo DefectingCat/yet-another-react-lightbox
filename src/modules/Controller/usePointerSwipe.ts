@@ -94,6 +94,7 @@ export function usePointerSwipe<T extends Element = Element>(
 
     const onPointerMove = useEventCallback((event: React.PointerEvent) => {
         const pointer = pointers.current.find((p) => p.pointerId === event.pointerId);
+        console.log(pointer);
         if (pointer) {
             const isCurrentPointer = activePointer.current === event.pointerId;
 
