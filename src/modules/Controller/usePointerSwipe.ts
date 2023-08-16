@@ -56,8 +56,13 @@ export function usePointerSwipe<T extends Element = Element>(
         [clearPointer]
     );
 
+    const isPortrait = React.useRef(window.matchMedia("(orientation: portrait)").matches);
     const onPointerDown = useEventCallback((event: React.PointerEvent) => {
-        addPointer(event);
+        const e = event;
+        if (isPortrait.current) {
+            [e.clientX, e.clientY] = [e.clientY, -e.clientX];
+        }
+        addPointer(e);
     });
 
     const onPointerUp = useEventCallback((event: React.PointerEvent) => {
@@ -92,9 +97,12 @@ export function usePointerSwipe<T extends Element = Element>(
         clearPointer(event);
     });
 
-    const onPointerMove = useEventCallback((event: React.PointerEvent) => {
+    const onPointerMove = useEventCallback((e: React.PointerEvent) => {
+        const event = e;
+        if (isPortrait.current) {
+            [event.clientX, event.clientY] = [event.clientY, -event.clientX];
+        }
         const pointer = pointers.current.find((p) => p.pointerId === event.pointerId);
-        console.log(pointer);
         if (pointer) {
             const isCurrentPointer = activePointer.current === event.pointerId;
 
