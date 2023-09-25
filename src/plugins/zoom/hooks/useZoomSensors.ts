@@ -127,7 +127,25 @@ export function useZoomSensors(
         [clearPointer]
     );
 
-    const onPointerDown = useEventCallback((event: React.PointerEvent) => {
+    // Detect is in force portrait mode.
+    // If is true, swip clientx and clienty
+    const portrait = React.useRef(window.matchMedia("(orientation: portrait)"));
+    const isPortrait = React.useRef(portrait.current.matches);
+    React.useEffect(() => {
+        const handleRotate = (e: MediaQueryListEvent) => {
+            isPortrait.current = e.matches;
+        };
+        portrait.current.addEventListener("change", handleRotate);
+        const p = portrait.current;
+        return () => {
+            p.removeEventListener("change", handleRotate);
+        };
+    }, []);
+    const onPointerDown = useEventCallback((e: React.PointerEvent) => {
+        const event = e;
+        if (isPortrait.current) {
+            [event.clientX, event.clientY] = [event.clientY, -event.clientX];
+        }
         const pointers = activePointers.current;
 
         // ignore clicks outside current slide (zoom icons, navigation buttons, etc.)
@@ -161,7 +179,11 @@ export function useZoomSensors(
         }
     });
 
-    const onPointerMove = useEventCallback((event: React.PointerEvent) => {
+    const onPointerMove = useEventCallback((e: React.PointerEvent) => {
+        const event = e;
+        if (isPortrait.current) {
+            [event.clientX, event.clientY] = [event.clientY, -event.clientX];
+        }
         const pointers = activePointers.current;
 
         const activePointer = pointers.find((p) => p.pointerId === event.pointerId);
