@@ -107,3 +107,4 @@ dist
 .idea
 
 src/**/*.css
+/**/*.DS_Store
