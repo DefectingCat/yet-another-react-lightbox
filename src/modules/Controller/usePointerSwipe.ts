@@ -3,7 +3,6 @@ import * as React from "react";
 import { UseSensors } from "../../hooks/useSensors.js";
 import { useEventCallback } from "../../hooks/useEventCallback.js";
 import { usePointerEvents } from "../../hooks/usePointerEvents.js";
-import usePortrait from "../../hooks/usePortrait.js";
 
 enum Gesture {
     NONE,
@@ -57,13 +56,12 @@ export function usePointerSwipe<T extends Element = Element>(
         [clearPointer]
     );
 
-    const { isPortrait } = usePortrait();
     const onPointerDown = useEventCallback((event: React.PointerEvent) => {
-        const e = event;
-        if (isPortrait) {
-            [e.clientX, e.clientY] = [e.clientY, -e.clientX];
-        }
-        addPointer(e);
+        // const e = event;
+        // if (isPortrait) {
+        //     [e.clientX, e.clientY] = [e.clientY, -e.clientX];
+        // }
+        addPointer(event);
     });
 
     const onPointerUp = useEventCallback((event: React.PointerEvent) => {
@@ -100,9 +98,10 @@ export function usePointerSwipe<T extends Element = Element>(
 
     const onPointerMove = useEventCallback((e: React.PointerEvent) => {
         const event = e;
-        if (isPortrait) {
-            [event.clientX, event.clientY] = [event.clientY, -event.clientX];
-        }
+        // if (isPortrait) {
+        //     [event.clientX, event.clientY] = [event.clientY, -event.clientX];
+        // }
+
         const pointer = pointers.current.find((p) => p.pointerId === event.pointerId);
         if (pointer) {
             const isCurrentPointer = activePointer.current === event.pointerId;
