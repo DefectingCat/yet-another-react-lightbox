@@ -3,6 +3,7 @@ import * as React from "react";
 import { UseSensors } from "../../hooks/useSensors.js";
 import { useEventCallback } from "../../hooks/useEventCallback.js";
 import { usePointerEvents } from "../../hooks/usePointerEvents.js";
+import usePortrait from "../../hooks/usePortrait.js";
 
 enum Gesture {
     NONE,
@@ -56,23 +57,10 @@ export function usePointerSwipe<T extends Element = Element>(
         [clearPointer]
     );
 
-    // Detect is in force portrait mode.
-    // If is true, swip clientx and clienty
-    const portrait = React.useRef(window.matchMedia("(orientation: portrait)"));
-    const isPortrait = React.useRef(portrait.current.matches);
-    React.useEffect(() => {
-        const handleRotate = (e: MediaQueryListEvent) => {
-            isPortrait.current = e.matches;
-        };
-        portrait.current.addEventListener("change", handleRotate);
-        const p = portrait.current;
-        return () => {
-            p.removeEventListener("change", handleRotate);
-        };
-    }, []);
+    const { isPortrait } = usePortrait();
     const onPointerDown = useEventCallback((event: React.PointerEvent) => {
         const e = event;
-        if (isPortrait.current) {
+        if (isPortrait) {
             [e.clientX, e.clientY] = [e.clientY, -e.clientX];
         }
         addPointer(e);
@@ -112,7 +100,7 @@ export function usePointerSwipe<T extends Element = Element>(
 
     const onPointerMove = useEventCallback((e: React.PointerEvent) => {
         const event = e;
-        if (isPortrait.current) {
+        if (isPortrait) {
             [event.clientX, event.clientY] = [event.clientY, -event.clientX];
         }
         const pointer = pointers.current.find((p) => p.pointerId === event.pointerId);

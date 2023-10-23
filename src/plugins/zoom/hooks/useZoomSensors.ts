@@ -11,6 +11,7 @@ import {
 import { useZoomProps } from "./useZoomProps.js";
 import { useZoomState } from "./useZoomState.js";
 import { usePointerEvents } from "../../../hooks/usePointerEvents.js";
+import usePortrait from "../../../hooks/usePortrait.js";
 
 function distance(pointerA: React.MouseEvent, pointerB: React.MouseEvent) {
     return ((pointerA.clientX - pointerB.clientX) ** 2 + (pointerA.clientY - pointerB.clientY) ** 2) ** 0.5;
@@ -127,23 +128,10 @@ export function useZoomSensors(
         [clearPointer]
     );
 
-    // Detect is in force portrait mode.
-    // If is true, swip clientx and clienty
-    const portrait = React.useRef(window.matchMedia("(orientation: portrait)"));
-    const isPortrait = React.useRef(portrait.current.matches);
-    React.useEffect(() => {
-        const handleRotate = (e: MediaQueryListEvent) => {
-            isPortrait.current = e.matches;
-        };
-        portrait.current.addEventListener("change", handleRotate);
-        const p = portrait.current;
-        return () => {
-            p.removeEventListener("change", handleRotate);
-        };
-    }, []);
+    const { isPortrait } = usePortrait();
     const onPointerDown = useEventCallback((e: React.PointerEvent) => {
         const event = e;
-        if (isPortrait.current) {
+        if (isPortrait) {
             [event.clientX, event.clientY] = [event.clientY, -event.clientX];
         }
         const pointers = activePointers.current;
@@ -181,7 +169,7 @@ export function useZoomSensors(
 
     const onPointerMove = useEventCallback((e: React.PointerEvent) => {
         const event = e;
-        if (isPortrait.current) {
+        if (isPortrait) {
             [event.clientX, event.clientY] = [event.clientY, -event.clientX];
         }
         const pointers = activePointers.current;
